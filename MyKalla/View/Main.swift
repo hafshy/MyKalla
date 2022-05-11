@@ -443,10 +443,10 @@ struct Main: View {
                                                     .simultaneousGesture(
                                                         LongPressGesture()
                                                             .onEnded { _ in
-                                                                onHold(text: "Ashyaap")
+                                                                onHold(text: "This is a test")
                                                             }
                                                     )
-                                                
+
                                                 Text(!currentHEX.isEmpty ? currentHEX : "?")
                                                     .font(.caption)
                                                     .foregroundColor(.white)
