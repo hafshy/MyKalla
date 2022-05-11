@@ -29,7 +29,7 @@ struct Main: View {
     @State var isShowToast: Bool = false
     @GestureState var gestureOffset: CGFloat = 0
     @FocusState var isInputActive: Bool
-    
+    @FetchRequest(sortDescriptors: []) var kallaColor: FetchedResults<KallaCollection>
     // MARK: Map HEX <-> RGB
     // Mapping Single Hex Value to RGB
     let mapHex: [String: Int] = [
