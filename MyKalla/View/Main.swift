@@ -30,6 +30,7 @@ struct Main: View {
     @GestureState var gestureOffset: CGFloat = 0
     @FocusState var isInputActive: Bool
     
+    // MARK: Map HEX <-> RGB
     // Mapping Single Hex Value to RGB
     let mapHex: [String: Int] = [
         "0": 0,
@@ -70,6 +71,7 @@ struct Main: View {
         15: "F"
     ]
     
+    // MARK: Input Validation
     // HEX Input Validation
     var validInputHEX: Bool {
         inputHEX.count == 6 || inputHEX.isEmpty
@@ -88,7 +90,7 @@ struct Main: View {
     var body: some View {
         NavigationView {
             ZStack {
-                // Background View
+                // MARK: Background View
                 // TODO: change to My Kalla view
                 GeometryReader { proxy in
                     let frame = proxy.frame(
@@ -109,7 +111,12 @@ struct Main: View {
                 }
                 .ignoresSafeArea()
                 
-                // Bottom Sheet View
+                VStack {
+                    Text("AYE")
+                    Spacer()
+                }
+                
+                // MARK: Bottom Sheet View
                 // TODO: add convert component
                 GeometryReader { proxy -> AnyView in
                     
@@ -118,14 +125,14 @@ struct Main: View {
                     
                     return AnyView(
                         
-                        // Bottom Sheet Conainer
+                        // MARK: Bottom Sheet Container
                         ZStack {
                             
-                            // Background Blur
+                            // MARK: Background Blur
                             BlurView(style: .systemThinMaterial)
                                 .clipShape(CustomEdge(corner: [.topLeft, .topRight], radius: 32))
                             
-                            // Content
+                            // MARK: Bottom Sheet Content
                             // TODO: Add Converter behind capsule
                             VStack {
                                 Capsule()
@@ -142,7 +149,7 @@ struct Main: View {
                                 ScrollView {
                                     Section(
                                         header:
-                                            // Mode Switcher
+                                            // MARK: Mode Switcher
                                             HStack {
                                                 Text(hexMode ? "From HEX" : "From RGB")
                                                     .font(.headline)
@@ -158,7 +165,7 @@ struct Main: View {
                                                 .clipShape(Capsule())
                                             }
                                     ) {
-                                        // HEX Mode
+                                        // MARK: HEX Mode
                                         if hexMode {
                                             // Input HEX
                                             HStack {
@@ -231,7 +238,7 @@ struct Main: View {
                                             }
                                         }
                                         
-                                        // RGB Mode
+                                        // MARK: RGB Mode
                                         if !hexMode {
                                             // Input R
                                             HStack {
@@ -434,7 +441,7 @@ struct Main: View {
                                         }
                                         
                                         
-                                        // Color View and Colorname
+                                        // MARK: Color View and Colorname
                                         if currentHEX != "" {
                                             ZStack {
                                                 RoundedRectangle(cornerRadius: 30)
@@ -458,7 +465,7 @@ struct Main: View {
                                                     .clipShape(Capsule())
                                             }
                                             
-                                            // HEX Color Copy Card
+                                            // MARK: HEX Color Copy Card
                                             HStack {
                                                 Text("HEX Value")
                                                     .font(.subheadline)
@@ -469,7 +476,7 @@ struct Main: View {
                                             
                                             ColorCard(showToast: $isShowToast, title: currentHEX == "" ? "-" : currentHEX)
                                             
-                                            // RGB Color Copy Card
+                                            // MARK: RGB Color Copy Card
                                             HStack {
                                                 Text("RGB Value")
                                                     .font(.subheadline)
@@ -568,7 +575,7 @@ struct Main: View {
         synthesizer.speak(utterance)
     }
     
-    // HEX to RGB
+    // MARK: HEX to RGB
     func toRGB(hex: String) -> (r: Int, g: Int, b: Int) {
         let rStr: String = String(hex.prefix(2))
         let gStr: String = String(hex.suffix(4).prefix(2))
@@ -581,7 +588,7 @@ struct Main: View {
         )
     }
     
-    // RGB to HEX
+    // MARK: RGB to HEX
     func toHEX(r: Int, g: Int, b: Int) -> String {
         let hexR: String = mapRGB[r / 16]! + mapRGB[r % 16]!
         let hexG: String = mapRGB[g / 16]! + mapRGB[g % 16]!
