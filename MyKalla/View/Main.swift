@@ -26,6 +26,7 @@ struct Main: View {
     @State var inputR: String = ""
     @State var inputG: String = ""
     @State var inputB: String = ""
+    @State var isShowToast: Bool = false
     @GestureState var gestureOffset: CGFloat = 0
     @FocusState var isInputActive: Bool
     
@@ -466,7 +467,7 @@ struct Main: View {
                                             }
                                             .padding(.horizontal, 4)
                                             
-                                            ColorCard(title: currentHEX == "" ? "-" : currentHEX)
+                                            ColorCard(showToast: $isShowToast, title: currentHEX == "" ? "-" : currentHEX)
                                             
                                             // RGB Color Copy Card
                                             HStack {
@@ -477,7 +478,7 @@ struct Main: View {
                                             }
                                             .padding(.horizontal, 4)
                                             .padding(.top, 12)
-                                            RgbColorCard(red: currentRGB["red"]!, green: currentRGB["green"]!, blue: currentRGB["blue"]!)
+                                            RgbColorCard(showToast: $isShowToast, red: currentRGB["red"]!, green: currentRGB["green"]!, blue: currentRGB["blue"]!)
                                             Spacer(minLength: 100.0)
                                         }
                                     }
@@ -520,6 +521,22 @@ struct Main: View {
                     )
                 }
                 .ignoresSafeArea(.all, edges: .bottom)
+                
+                // MARK: Toast Alert
+                if isShowToast {
+                    VStack {
+                        Spacer()
+                        
+                        Text("Copied!")
+                            .padding(10)
+                            .foregroundColor(.white)
+                            .font(.subheadline)
+                            .background(.black.opacity(0.8))
+                            .clipShape(Capsule())
+                            .padding(42)
+                    }
+                }
+                
             }
             .navigationTitle("My Kalla")
         }

@@ -9,6 +9,8 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct ColorCard: View {
+    @Binding var showToast: Bool
+    
     var title: String
     
     var body: some View {
@@ -24,6 +26,14 @@ struct ColorCard: View {
                 Image(systemName: "doc.on.doc")
                     .onTapGesture {
                         UIPasteboard.general.string = self.title
+                        withAnimation {
+                            showToast = true
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            withAnimation {
+                                showToast = false
+                            }
+                        }
                     }
                     .padding()
             }
@@ -36,6 +46,8 @@ struct ColorCard: View {
 }
 
 struct RgbColorCard: View {
+    @Binding var showToast: Bool
+    
     var red: Int
     var green: Int
     var blue: Int
@@ -54,6 +66,14 @@ struct RgbColorCard: View {
                     .foregroundColor(.red)
                     .onTapGesture {
                         UIPasteboard.general.string = String(red)
+                        withAnimation {
+                            showToast = true
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            withAnimation {
+                                showToast = false
+                            }
+                        }
                     }
             }
             .padding(.horizontal, 16)
@@ -74,6 +94,14 @@ struct RgbColorCard: View {
                     .foregroundColor(.green)
                     .onTapGesture {
                         UIPasteboard.general.string = String(green)
+                        withAnimation {
+                            showToast = true
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            withAnimation {
+                                showToast = false
+                            }
+                        }
                     }
             }
             .padding(.horizontal, 16)
@@ -93,6 +121,14 @@ struct RgbColorCard: View {
                     .foregroundColor(.blue)
                     .onTapGesture {
                         UIPasteboard.general.string = String(blue)
+                        withAnimation {
+                            showToast = true
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            withAnimation {
+                                showToast = false
+                            }
+                        }
                     }
             }
             .padding(.horizontal, 16)
