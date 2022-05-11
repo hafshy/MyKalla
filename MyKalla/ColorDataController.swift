@@ -18,4 +18,26 @@ class ColorDataController: ObservableObject {
             }
         }
     }
+    
+    func save(context: NSManagedObjectContext) {
+        do {
+            try context.save()
+            print("Data Saved")
+        } catch {
+            print("Could not save the data")
+        }
+    }
+    
+    func addColor(colorName: String, hex: String, r: String, g: String, b: String, context: NSManagedObjectContext) {
+        let kallaColor =  KallaCollection(context: context)
+        
+        kallaColor.id = UUID()
+        kallaColor.colorName = colorName
+        kallaColor.hex = hex
+        kallaColor.r = r
+        kallaColor.g = g
+        kallaColor.b = b
+        
+        save(context: context)
+    }
 }

@@ -4,11 +4,12 @@
         <attribute name="b" optional="YES" attributeType="String"/>
         <attribute name="colorName" optional="YES" attributeType="String"/>
         <attribute name="g" optional="YES" attributeType="String"/>
+        <attribute name="group" optional="YES" attributeType="String"/>
         <attribute name="hex" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="r" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="KallaCollection" positionX="-54" positionY="-9" width="128" height="119"/>
+        <element name="KallaCollection" positionX="-54" positionY="-9" width="128" height="134"/>
     </elements>
 </model>
