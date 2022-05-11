@@ -2,7 +2,7 @@
 //  BlurView.swift
 //  MyKalla
 //
-//  Created by Hafshy Yazid Albisthami on 10/05/22.
+//  Created by Hafshy Yazid Albisthami on 11/05/22.
 //
 
 import SwiftUI
@@ -21,4 +21,3 @@ struct BlurView: UIViewRepresentable {
     func updateUIView(_ uiView: UIVisualEffectView, context: Context) {
     }
 }
-

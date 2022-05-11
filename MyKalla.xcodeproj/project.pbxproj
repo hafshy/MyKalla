@@ -9,22 +9,22 @@
 /* Begin PBXBuildFile section */
 		5A4C497A282A20210015F781 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A4C4979282A20210015F781 /* Assets.xcassets */; };
 		5A4C497D282A20210015F781 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A4C497C282A20210015F781 /* Preview Assets.xcassets */; };
-		5A4C4985282A20480015F781 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4C4984282A20480015F781 /* BlurView.swift */; };
-		5A4C4989282A206A0015F781 /* CustomEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4C4986282A206A0015F781 /* CustomEdge.swift */; };
-		5A4C498A282A206A0015F781 /* ColorCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4C4987282A206A0015F781 /* ColorCard.swift */; };
-		5A4C498B282A206A0015F781 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4C4988282A206A0015F781 /* Main.swift */; };
 		5A4C498D282A20830015F781 /* MyKallaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4C498C282A20830015F781 /* MyKallaApp.swift */; };
+		5A917297282B485D000F9731 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A917296282B485D000F9731 /* Main.swift */; };
+		5A917299282B4A08000F9731 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A917298282B4A08000F9731 /* BlurView.swift */; };
+		5A91729B282B4A2F000F9731 /* CustomEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A91729A282B4A2F000F9731 /* CustomEdge.swift */; };
+		5A91729D282B4A46000F9731 /* ColorCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A91729C282B4A46000F9731 /* ColorCard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5A4C4972282A20200015F781 /* MyKalla.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyKalla.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A4C4979282A20210015F781 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5A4C497C282A20210015F781 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		5A4C4984282A20480015F781 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
-		5A4C4986282A206A0015F781 /* CustomEdge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomEdge.swift; path = ../../../Kalla/Kalla/View/CustomEdge.swift; sourceTree = "<group>"; };
-		5A4C4987282A206A0015F781 /* ColorCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorCard.swift; path = ../../../Kalla/Kalla/View/ColorCard.swift; sourceTree = "<group>"; };
-		5A4C4988282A206A0015F781 /* Main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Main.swift; path = ../../../Kalla/Kalla/View/Main.swift; sourceTree = "<group>"; };
 		5A4C498C282A20830015F781 /* MyKallaApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MyKallaApp.swift; path = ../../Kalla/Kalla/MyKallaApp.swift; sourceTree = "<group>"; };
+		5A917296282B485D000F9731 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
+		5A917298282B4A08000F9731 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
+		5A91729A282B4A2F000F9731 /* CustomEdge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomEdge.swift; sourceTree = "<group>"; };
+		5A91729C282B4A46000F9731 /* ColorCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,10 +76,10 @@
 		5A4C4983282A203C0015F781 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				5A4C4987282A206A0015F781 /* ColorCard.swift */,
-				5A4C4986282A206A0015F781 /* CustomEdge.swift */,
-				5A4C4988282A206A0015F781 /* Main.swift */,
-				5A4C4984282A20480015F781 /* BlurView.swift */,
+				5A917296282B485D000F9731 /* Main.swift */,
+				5A917298282B4A08000F9731 /* BlurView.swift */,
+				5A91729A282B4A2F000F9731 /* CustomEdge.swift */,
+				5A91729C282B4A46000F9731 /* ColorCard.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -154,11 +154,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A4C498B282A206A0015F781 /* Main.swift in Sources */,
-				5A4C4985282A20480015F781 /* BlurView.swift in Sources */,
+				5A917297282B485D000F9731 /* Main.swift in Sources */,
+				5A91729D282B4A46000F9731 /* ColorCard.swift in Sources */,
 				5A4C498D282A20830015F781 /* MyKallaApp.swift in Sources */,
-				5A4C4989282A206A0015F781 /* CustomEdge.swift in Sources */,
-				5A4C498A282A206A0015F781 /* ColorCard.swift in Sources */,
+				5A917299282B4A08000F9731 /* BlurView.swift in Sources */,
+				5A91729B282B4A2F000F9731 /* CustomEdge.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
