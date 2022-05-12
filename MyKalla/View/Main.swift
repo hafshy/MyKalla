@@ -28,6 +28,7 @@ struct Main: View {
     @State var inputG: String = ""
     @State var inputB: String = ""
     @State var isShowToast: Bool = false
+    @State var isShowSaved: Bool = false
     @GestureState var gestureOffset: CGFloat = 0
     @FocusState var isInputActive: Bool
     @Environment(\.managedObjectContext) var manageObjectContext
@@ -117,7 +118,10 @@ struct Main: View {
                 VStack {
                     HStack {
                         Text("Total color: \(totalColor())")
+                            .font(.headline)
+                            .bold()
                             .padding(.horizontal)
+                            
                         Spacer()
                     }
                     
@@ -130,7 +134,7 @@ struct Main: View {
                                     
                                     Spacer()
                                     
-                                    Text(color.group ?? "Unknown")
+                                    Text("#" + (color.hex ?? "Unknown"))
                                     RoundedRectangle(cornerRadius: 8)
                                         .frame(width: 40, height: 40, alignment: .center)
                                         .foregroundColor(Color(red: Double(color.r) / 255, green: Double(color.g) / 255, blue: Double(color.b) / 255))
@@ -534,6 +538,14 @@ struct Main: View {
                                             
                                             Button(action: {
                                                 ColorDataController().addColor(colorName: "Color Name", hex: currentHEX, r: currentRGB["red"]!, g: currentRGB["green"]!, b: currentRGB["blue"]!, group: "Group", context: manageObjectContext)
+                                                withAnimation {
+                                                    isShowSaved = true
+                                                }
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                                    withAnimation {
+                                                        isShowSaved = false
+                                                    }
+                                                }
                                             }) {
                                                 Text("Save Color")
                                                     .bold()
@@ -597,6 +609,20 @@ struct Main: View {
                         Spacer()
                         
                         Text("Copied!")
+                            .padding(10)
+                            .foregroundColor(.white)
+                            .font(.subheadline)
+                            .background(.black.opacity(0.8))
+                            .clipShape(Capsule())
+                            .padding(42)
+                    }
+                }
+                
+                if isShowSaved {
+                    VStack {
+                        Spacer()
+                        
+                        Text("Saved!")
                             .padding(10)
                             .foregroundColor(.white)
                             .font(.subheadline)
