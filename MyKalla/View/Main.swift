@@ -660,7 +660,11 @@ struct Main: View {
     }
     
     func deleteColor(offsets: IndexSet) {
-        
+        withAnimation {
+            offsets.map { kallaColor[$0] }.forEach(manageObjectContext.delete)
+            
+            ColorDataController().save(context: manageObjectContext)
+        }
     }
     
     func totalColor() -> Int {
