@@ -262,7 +262,7 @@ struct Main: View {
                                                                 green: Double(rgb.g) / 255,
                                                                 blue: Double(rgb.b) / 255
                                                             )
-                                                            
+                                                            loadName(hex: currentHEX)
                                                         } else {
                                                             currentHEX = ""
                                                             currentRGB = [
@@ -329,6 +329,8 @@ struct Main: View {
                                                                 green: Double(inputG)! / 255,
                                                                 blue: Double(inputB)! / 255
                                                             )
+                                                            
+                                                            loadName(hex: currentHEX)
                                                         } else {
                                                             currentHEX = ""
                                                             currentRGB = [
@@ -392,6 +394,7 @@ struct Main: View {
                                                                 green: Double(inputG)! / 255,
                                                                 blue: Double(inputB)! / 255
                                                             )
+                                                            loadName(hex: currentHEX)
                                                         } else {
                                                             currentHEX = ""
                                                             currentRGB = [
@@ -464,6 +467,7 @@ struct Main: View {
                                                                 green: Double(inputG)! / 255,
                                                                 blue: Double(inputB)! / 255
                                                             )
+                                                            loadName(hex: currentHEX)
                                                         } else {
                                                             currentHEX = ""
                                                             currentRGB = [
@@ -502,11 +506,13 @@ struct Main: View {
                                                     .simultaneousGesture(
                                                         LongPressGesture()
                                                             .onEnded { _ in
-                                                                onHold(text: "This is a test")
+                                                                if !currentColorName.isEmpty {
+                                                                    onHold(text: currentColorName)
+                                                                }
                                                             }
                                                     )
 
-                                                Text(!currentHEX.isEmpty ? currentHEX : "?")
+                                                Text(!currentColorName.isEmpty ? currentColorName : "?")
                                                     .font(.caption)
                                                     .foregroundColor(.white)
                                                     .fontWeight(.bold)
@@ -539,7 +545,7 @@ struct Main: View {
                                             RgbColorCard(showToast: $isShowToast, red: currentRGB["red"]!, green: currentRGB["green"]!, blue: currentRGB["blue"]!)
                                             
                                             Button(action: {
-                                                ColorDataController().addColor(colorName: "Color Name", hex: currentHEX, r: currentRGB["red"]!, g: currentRGB["green"]!, b: currentRGB["blue"]!, group: "Group", context: manageObjectContext)
+                                                ColorDataController().addColor(colorName: currentColorName.isEmpty ? "Unknown" : currentColorName, hex: currentHEX, r: currentRGB["red"]!, g: currentRGB["green"]!, b: currentRGB["blue"]!, group: "Group", context: manageObjectContext)
                                                 withAnimation {
                                                     isShowSaved = true
                                                 }
@@ -697,6 +703,17 @@ struct Main: View {
     
     func totalColor() -> Int {
         return kallaColor.count
+    }
+    
+    func loadName(hex: String) {
+        guard let url = URL(string: "https://www.thecolorapi.com/id?hex=" + currentHEX) else { return }
+        
+        URLSession.shared.dataTask(with: url) { data, _, _ in
+            let colorName = try! JSONDecoder().decode(ColorName.self, from: data!)
+            print(colorName.name.value)
+            currentColorName = colorName.name.value
+        }
+        .resume()
     }
 }
 
