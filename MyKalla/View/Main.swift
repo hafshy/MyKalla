@@ -8,6 +8,7 @@
 import SwiftUI
 import AVFoundation
 import Combine
+import CoreData
 
 struct Main: View {
     // Gesture
@@ -29,7 +30,8 @@ struct Main: View {
     @State var isShowToast: Bool = false
     @GestureState var gestureOffset: CGFloat = 0
     @FocusState var isInputActive: Bool
-    @FetchRequest(sortDescriptors: []) var kallaColor: FetchedResults<KallaCollection>
+    @Environment(\.managedObjectContext) var manageObjectContext
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.group)]) var kallaColor: FetchedResults<KallaCollection>
     
     // MARK: Map HEX <-> RGB
     // Mapping Single Hex Value to RGB
@@ -99,21 +101,59 @@ struct Main: View {
                     )
                     
                     // TODO: Change this image into MyKalla, ok?
-                    Image("gradient")
-                        .resizable()
-                        .aspectRatio(
-                            contentMode: .fill
-                        )
-                        .frame(
-                            width: frame.width,
-                            height: frame.height,
-                            alignment: .center
-                        )
+//                    Image("gradient")
+//                        .resizable()
+//                        .aspectRatio(
+//                            contentMode: .fill
+//                        )
+//                        .frame(
+//                            width: frame.width,
+//                            height: frame.height,
+//                            alignment: .center
+//                        )
                 }
                 .ignoresSafeArea()
                 
                 VStack {
-                    Text("AYE")
+                    HStack {
+                        Text("Total color: \(totalColor())")
+                            .padding(.horizontal)
+                        Spacer()
+                    }
+                    
+                    List {
+                        ForEach(kallaColor) { color in
+                            NavigationLink(destination: Text("\(color.colorName ?? "Unknown")")) {
+                                HStack {
+                                    Text(color.colorName ?? "Unknown")
+                                        .bold()
+                                    
+                                    Spacer()
+                                    
+                                    Text(color.group ?? "Unknown")
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .frame(width: 40, height: 40, alignment: .center)
+                                        .foregroundColor(Color(red: Double(color.r) / 255, green: Double(color.g) / 255, blue: Double(color.b) / 255))
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 8)
+                                                .stroke(.gray, lineWidth: 1)
+                                        )
+                                        .padding()
+                                        .simultaneousGesture(
+                                            LongPressGesture()
+                                                .onEnded { _ in
+                                                    onHold(text: "This is a test")
+                                                }
+                                        )
+                                }
+                            }
+//                            .listRowBackground(Color.clear)
+                        }
+                        .onDelete(perform: deleteColor)
+                        
+                        Spacer(minLength: 200.0)
+                    }
+                    .listStyle(.plain)
                     Spacer()
                 }
                 
@@ -138,7 +178,11 @@ struct Main: View {
                             VStack {
                                 Capsule()
                                     .fill(.white)
-                                    .frame(width: 40, height: 4, alignment: .center)
+                                    .frame(
+                                        width: 40,
+                                        height: 4,
+                                        alignment: .center
+                                    )
                                     .padding(.top, 12)
                                 
                                 Text("Convert")
@@ -487,7 +531,24 @@ struct Main: View {
                                             .padding(.horizontal, 4)
                                             .padding(.top, 12)
                                             RgbColorCard(showToast: $isShowToast, red: currentRGB["red"]!, green: currentRGB["green"]!, blue: currentRGB["blue"]!)
+                                            
+                                            Button(action: {
+                                                ColorDataController().addColor(colorName: "Color Name", hex: currentHEX, r: currentRGB["red"]!, g: currentRGB["green"]!, b: currentRGB["blue"]!, group: "Group", context: manageObjectContext)
+                                            }) {
+                                                Text("Save Color")
+                                                    .bold()
+                                                    .frame(maxWidth: .infinity)
+                                                    .foregroundColor(.white)
+                                                    .padding()
+                                                    .background(.blue)
+//                                                    .clipShape(Capsule())
+                                            }
+                                            .cornerRadius(16)
+                                            .padding(.vertical)
+                                            
                                             Spacer(minLength: 100.0)
+                                            
+                                            
                                         }
                                     }
                                     .frame(maxWidth: .infinity)
@@ -596,6 +657,14 @@ struct Main: View {
         let hexB: String = mapRGB[b / 16]! + mapRGB[b % 16]!
         
         return (hexR + hexG + hexB)
+    }
+    
+    func deleteColor(offsets: IndexSet) {
+        
+    }
+    
+    func totalColor() -> Int {
+        return kallaColor.count
     }
 }
 

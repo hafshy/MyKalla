@@ -28,16 +28,18 @@ class ColorDataController: ObservableObject {
         }
     }
     
-    func addColor(colorName: String, hex: String, r: String, g: String, b: String, context: NSManagedObjectContext) {
+    func addColor(colorName: String, hex: String, r: Int, g: Int, b: Int, group: String, context: NSManagedObjectContext) {
         let kallaColor =  KallaCollection(context: context)
         
         kallaColor.id = UUID()
         kallaColor.colorName = colorName
         kallaColor.hex = hex
-        kallaColor.r = r
-        kallaColor.g = g
-        kallaColor.b = b
+        kallaColor.r = Int16(r)
+        kallaColor.g = Int16(g)
+        kallaColor.b = Int16(b)
+        kallaColor.group = group
         
+        print("\(hex)")
         save(context: context)
     }
 }
