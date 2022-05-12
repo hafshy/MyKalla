@@ -154,11 +154,9 @@ struct Main: View {
 //                            .listRowBackground(Color.clear)
                         }
                         .onDelete(perform: deleteColor)
-                        
-                        Spacer(minLength: 200.0)
                     }
                     .listStyle(.plain)
-                    Spacer()
+                    Spacer(minLength: 105.0)
                 }
                 
                 // MARK: Bottom Sheet View
@@ -181,7 +179,7 @@ struct Main: View {
                             // TODO: Add Converter behind capsule
                             VStack {
                                 Capsule()
-                                    .fill(.white)
+                                    .fill(.primary)
                                     .frame(
                                         width: 40,
                                         height: 4,
@@ -199,6 +197,9 @@ struct Main: View {
                                     Section(
                                         header:
                                             // MARK: Mode Switcher
+                                        VStack {
+                                            Divider()
+                                            
                                             HStack {
                                                 Text(hexMode ? "From HEX" : "From RGB")
                                                     .font(.headline)
@@ -213,6 +214,7 @@ struct Main: View {
                                                 .background(.clear)
                                                 .clipShape(Capsule())
                                             }
+                                        }
                                     ) {
                                         // MARK: HEX Mode
                                         if hexMode {
@@ -569,8 +571,8 @@ struct Main: View {
                             }
                             .frame(maxHeight: .infinity, alignment: .top)
                         }
-                            .offset(y: height - 285)
-                            .offset(y: -offset > 0 ? -offset <= (height - 285) ? offset : -(height - 285) : 0)
+                            .offset(y: height - 190)
+                            .offset(y: -offset > 0 ? -offset <= (height - 190) ? offset : -(height - 190) : 0)
                             .gesture(DragGesture().updating($gestureOffset, body: { value, out, _ in
                                 
                                 out = value.translation.height
@@ -578,7 +580,7 @@ struct Main: View {
                                 
                             }).onEnded({ value in
                                 
-                                let maxHeight = height - 285
+                                let maxHeight = height - 190
                                 
                                 withAnimation(
                                     .interpolatingSpring(
