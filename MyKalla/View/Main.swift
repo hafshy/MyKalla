@@ -32,7 +32,8 @@ struct Main: View {
     @GestureState var gestureOffset: CGFloat = 0
     @FocusState var isInputActive: Bool
     @Environment(\.managedObjectContext) var manageObjectContext
-    @FetchRequest(sortDescriptors: [SortDescriptor(\.group)]) var kallaColor: FetchedResults<KallaCollection>
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.colorName)]) var kallaColor: FetchedResults<KallaCollection>
+    @SectionedFetchRequest(sectionIdentifier: \.group!, sortDescriptors: [SortDescriptor(\.colorName)]) var kallaSectionColor: SectionedFetchResults<String, KallaCollection>
     
     // MARK: Map HEX <-> RGB
     // Mapping Single Hex Value to RGB
@@ -126,34 +127,52 @@ struct Main: View {
                     }
                     
                     List {
-                        ForEach(kallaColor) { color in
-                            NavigationLink(destination: Text("\(color.colorName ?? "Unknown")")) {
-                                HStack {
-                                    Text(color.colorName ?? "Unknown")
-                                        .bold()
-                                    
-                                    Spacer()
-                                    
-                                    Text("#" + (color.hex ?? "Unknown"))
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .frame(width: 40, height: 40, alignment: .center)
-                                        .foregroundColor(Color(red: Double(color.r) / 255, green: Double(color.g) / 255, blue: Double(color.b) / 255))
-                                        .overlay(
+                        ForEach(kallaSectionColor) { section in
+                            Section(header: Text(section.id)) {
+                                ForEach(section) { color in
+                                    NavigationLink(destination: Text("\(color.colorName ?? "Unknown")")) {
+                                        HStack {
+                                            VStack(alignment: .leading, spacing: 4) {
+                                                Text(color.colorName ?? "Unknown")
+                                                    .font(.title2)
+                                                    .bold()
+                                                Text("#" + (color.hex ?? "Unknown"))
+                                                    .font(.subheadline)
+                                            }
+                                            
+                                            Spacer()
+                                            
                                             RoundedRectangle(cornerRadius: 8)
-                                                .stroke(.gray, lineWidth: 1)
-                                        )
-                                        .padding()
-                                        .simultaneousGesture(
-                                            LongPressGesture()
-                                                .onEnded { _ in
-                                                    onHold(text: "This is a test")
-                                                }
-                                        )
+                                                .frame(width: 40, height: 40, alignment: .center)
+                                                .foregroundColor(Color(red: Double(color.r) / 255, green: Double(color.g) / 255, blue: Double(color.b) / 255))
+                                                .overlay(
+                                                    RoundedRectangle(cornerRadius: 8)
+                                                        .stroke(.gray, lineWidth: 1)
+                                                )
+                                                .padding()
+                                                .simultaneousGesture(
+                                                    LongPressGesture()
+                                                        .onEnded { _ in
+                                                            onHold(text: "This is a test")
+                                                        }
+                                                )
+                                        }
+                                    }
+                                    .swipeActions(content: {
+                                        Button(role: .destructive, action: {
+                                            withAnimation {
+                                                deleteColorInSection(collection: color)
+                                            }
+                                        }, label: {
+                                            Image(systemName: "trash")
+                                            
+                                        })
+                                    })
                                 }
                             }
-//                            .listRowBackground(Color.clear)
                         }
-                        .onDelete(perform: deleteColor)
+                        
+                        
                     }
                     .listStyle(.plain)
                     Spacer(minLength: 105.0)
@@ -262,7 +281,9 @@ struct Main: View {
                                                                 green: Double(rgb.g) / 255,
                                                                 blue: Double(rgb.b) / 255
                                                             )
-                                                            loadName(hex: currentHEX)
+                                                            loadName(hex: currentHEX) { (colorName) in
+                                                                currentColorName = colorName.name.value
+                                                            }
                                                         } else {
                                                             currentHEX = ""
                                                             currentRGB = [
@@ -330,7 +351,9 @@ struct Main: View {
                                                                 blue: Double(inputB)! / 255
                                                             )
                                                             
-                                                            loadName(hex: currentHEX)
+                                                            loadName(hex: currentHEX) { (colorName) in
+                                                                currentColorName = colorName.name.value
+                                                            }
                                                         } else {
                                                             currentHEX = ""
                                                             currentRGB = [
@@ -394,7 +417,9 @@ struct Main: View {
                                                                 green: Double(inputG)! / 255,
                                                                 blue: Double(inputB)! / 255
                                                             )
-                                                            loadName(hex: currentHEX)
+                                                            loadName(hex: currentHEX) { (colorName) in
+                                                                currentColorName = colorName.name.value
+                                                            }
                                                         } else {
                                                             currentHEX = ""
                                                             currentRGB = [
@@ -467,7 +492,9 @@ struct Main: View {
                                                                 green: Double(inputG)! / 255,
                                                                 blue: Double(inputB)! / 255
                                                             )
-                                                            loadName(hex: currentHEX)
+                                                            loadName(hex: currentHEX) { (colorName) in
+                                                                currentColorName = colorName.name.value
+                                                            }
                                                         } else {
                                                             currentHEX = ""
                                                             currentRGB = [
@@ -545,7 +572,7 @@ struct Main: View {
                                             RgbColorCard(showToast: $isShowToast, red: currentRGB["red"]!, green: currentRGB["green"]!, blue: currentRGB["blue"]!)
                                             
                                             Button(action: {
-                                                ColorDataController().addColor(colorName: currentColorName.isEmpty ? "Unknown" : currentColorName, hex: currentHEX, r: currentRGB["red"]!, g: currentRGB["green"]!, b: currentRGB["blue"]!, group: "Group", context: manageObjectContext)
+                                                ColorDataController().addColor(colorName: currentColorName.isEmpty ? "Unknown" : currentColorName, hex: currentHEX, r: currentRGB["red"]!, g: currentRGB["green"]!, b: currentRGB["blue"]!, group: "Project 1", context: manageObjectContext)
                                                 withAnimation {
                                                     isShowSaved = true
                                                 }
@@ -701,17 +728,29 @@ struct Main: View {
         }
     }
     
+    func deleteColorInSection(collection: KallaCollection) {
+        manageObjectContext.delete(collection)
+        ColorDataController().save(context: manageObjectContext)
+    }
+    
     func totalColor() -> Int {
         return kallaColor.count
     }
     
-    func loadName(hex: String) {
+    func loadName(hex: String, completion: @escaping (ColorName) -> ()) {
         guard let url = URL(string: "https://www.thecolorapi.com/id?hex=" + currentHEX) else { return }
         
         URLSession.shared.dataTask(with: url) { data, _, _ in
-            let colorName = try! JSONDecoder().decode(ColorName.self, from: data!)
-            print(colorName.name.value)
-            currentColorName = colorName.name.value
+            do {
+                if data != nil {
+                    let colorName = try! JSONDecoder().decode(ColorName.self, from: data!)
+                    DispatchQueue.main.async {
+                        completion(colorName)
+                    }
+                } else {
+                    print("Wrong path")
+                }
+            }
         }
         .resume()
     }
