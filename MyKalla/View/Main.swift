@@ -29,6 +29,7 @@ struct Main: View {
     @State var inputB: String = ""
     @State var isShowToast: Bool = false
     @State var isShowSaved: Bool = false
+    @State var isShowSheet: Bool = false
     @GestureState var gestureOffset: CGFloat = 0
     @FocusState var isInputActive: Bool
     @Environment(\.managedObjectContext) var manageObjectContext
