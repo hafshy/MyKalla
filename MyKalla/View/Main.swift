@@ -302,9 +302,9 @@ struct Main: View {
                                             HStack {
                                                 if !validInputHEX {
                                                     Text("HEX value must be 6")
-                                                    .font(.caption)
-                                                    .foregroundColor(.red)
-                                                    .transition(AnyTransition.opacity.animation(.linear(duration: 0.5)))
+                                                        .font(.caption)
+                                                        .foregroundColor(.red)
+                                                        .transition(AnyTransition.opacity.animation(.linear(duration: 0.5)))
                                                 }
 
                                                 Spacer()
@@ -372,9 +372,9 @@ struct Main: View {
                                             HStack {
                                                 if !((Int(inputR) ?? -1) >= 0 && (Int(inputR) ?? -1) <= 255) && inputR != "" {
                                                     Text("RGB Value must between 0 and 255")
-                                                    .font(.caption)
-                                                    .foregroundColor(.red)
-                                                    .transition(AnyTransition.opacity.animation(.linear(duration: 0.5)))
+                                                        .font(.caption)
+                                                        .foregroundColor(.red)
+                                                        .transition(AnyTransition.opacity.animation(.linear(duration: 0.5)))
                                                 }
 
                                                 Spacer()
@@ -438,9 +438,9 @@ struct Main: View {
                                             HStack {
                                                 if !((Int(inputG) ?? -1) >= 0 && (Int(inputG) ?? -1) <= 255) && inputG != "" {
                                                     Text("RGB Value must between 0 and 255")
-                                                    .font(.caption)
-                                                    .foregroundColor(.red)
-                                                    .transition(AnyTransition.opacity.animation(.linear(duration: 0.5)))
+                                                        .font(.caption)
+                                                        .foregroundColor(.red)
+                                                        .transition(AnyTransition.opacity.animation(.linear(duration: 0.5)))
                                                 }
 
                                                 Spacer()
@@ -514,9 +514,9 @@ struct Main: View {
                                             HStack {
                                                 if !((Int(inputB) ?? -1) >= 0 && (Int(inputB) ?? -1) <= 255) && inputB != "" {
                                                     Text("RGB Value must between 0 and 255")
-                                                    .font(.caption)
-                                                    .foregroundColor(.red)
-                                                    .transition(AnyTransition.opacity.animation(.linear(duration: 0.5)))
+                                                        .font(.caption)
+                                                        .foregroundColor(.red)
+                                                        .transition(AnyTransition.opacity.animation(.linear(duration: 0.5)))
                                                 }
 
                                                 Spacer()
@@ -582,7 +582,9 @@ struct Main: View {
                                                         isShowSaved = false
                                                     }
                                                 }
-                                            }) {
+                                                isShowSheet.toggle()
+                                            }
+                                            ) {
                                                 Text("Save Color")
                                                     .bold()
                                                     .frame(maxWidth: .infinity)
@@ -593,6 +595,9 @@ struct Main: View {
                                             }
                                             .cornerRadius(16)
                                             .padding(.vertical)
+                                            .sheet(isPresented: $isShowSheet) {
+                                                SaveSheet(groupList: getDistinctGroup(), passedColorName: currentColorName)
+                                            }
                                             
                                             Spacer(minLength: 100.0)
                                             
@@ -754,6 +759,12 @@ struct Main: View {
             }
         }
         .resume()
+    }
+    
+    func getDistinctGroup() -> [String] {
+        let groups: [String] = kallaColor.map { $0.group! }
+        let filtered: [String] = Array(Set(groups))
+        return filtered
     }
 }
 
