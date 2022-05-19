@@ -22,13 +22,12 @@ struct Main: View {
         "blue": -1
     ]
     @State var currentHEX: String = ""
-    @State var hexMode: Bool = false
+    @State var hexMode: Bool = true
     @State var inputHEX: String = ""
     @State var inputR: String = ""
     @State var inputG: String = ""
     @State var inputB: String = ""
     @State var isShowToast: Bool = false
-    @State var isShowSaved: Bool = false
     @State var isShowSheet: Bool = false
     @GestureState var gestureOffset: CGFloat = 0
     @FocusState var isInputActive: Bool
@@ -127,56 +126,65 @@ struct Main: View {
                         Spacer()
                     }
                     
-                    List {
-                        ForEach(kallaSectionColor) { section in
-                            Section(header: Text(section.id)) {
-                                ForEach(section) { color in
-                                    NavigationLink(destination: Text("\(color.colorName ?? "Unknown")")) {
-                                        HStack {
-                                            VStack(alignment: .leading, spacing: 4) {
-                                                Text(color.colorName ?? "Unknown")
-                                                    .font(.title2)
-                                                    .bold()
-                                                Text("#" + (color.hex ?? "Unknown"))
-                                                    .font(.subheadline)
+                    if (totalColor() == 0) {
+                        Spacer()
+                        Text("No Saved Color")
+                            .bold()
+                        Spacer()
+                    } else {
+                        List {
+                            ForEach(kallaSectionColor) { section in
+                                Section(header: Text(section.id)) {
+                                    ForEach(section) { color in
+                                        NavigationLink(destination: Text("\(color.colorName ?? "Unknown")")) {
+                                            HStack {
+                                                VStack(alignment: .leading, spacing: 4) {
+                                                    Text(color.colorName ?? "Unknown")
+                                                        .font(.title2)
+                                                        .bold()
+                                                    Text("#" + (color.hex ?? "Unknown"))
+                                                        .font(.subheadline)
+                                                }
+                                                
+                                                Spacer()
+                                                
+                                                RoundedRectangle(cornerRadius: 8)
+                                                    .frame(width: 40, height: 40, alignment: .center)
+                                                    .foregroundColor(Color(red: Double(color.r) / 255, green: Double(color.g) / 255, blue: Double(color.b) / 255))
+                                                    .overlay(
+                                                        RoundedRectangle(cornerRadius: 8)
+                                                            .stroke(.gray, lineWidth: 1)
+                                                    )
+                                                    .padding()
+                                                    .simultaneousGesture(
+                                                        LongPressGesture()
+                                                            .onEnded { _ in
+                                                                onHold(text: "This is a test")
+                                                            }
+                                                    )
                                             }
-                                            
-                                            Spacer()
-                                            
-                                            RoundedRectangle(cornerRadius: 8)
-                                                .frame(width: 40, height: 40, alignment: .center)
-                                                .foregroundColor(Color(red: Double(color.r) / 255, green: Double(color.g) / 255, blue: Double(color.b) / 255))
-                                                .overlay(
-                                                    RoundedRectangle(cornerRadius: 8)
-                                                        .stroke(.gray, lineWidth: 1)
-                                                )
-                                                .padding()
-                                                .simultaneousGesture(
-                                                    LongPressGesture()
-                                                        .onEnded { _ in
-                                                            onHold(text: "This is a test")
-                                                        }
-                                                )
                                         }
-                                    }
-                                    .swipeActions(content: {
-                                        Button(role: .destructive, action: {
-                                            withAnimation {
-                                                deleteColorInSection(collection: color)
-                                            }
-                                        }, label: {
-                                            Image(systemName: "trash")
-                                            
+                                        .swipeActions(content: {
+                                            Button(role: .destructive, action: {
+                                                withAnimation {
+                                                    deleteColorInSection(collection: color)
+                                                }
+                                            }, label: {
+                                                Image(systemName: "trash")
+                                                
+                                            })
                                         })
-                                    })
+                                    }
                                 }
                             }
+                            
+                            
                         }
-                        
-                        
+                        .listStyle(.plain)
                     }
-                    .listStyle(.plain)
                     Spacer(minLength: 105.0)
+                    
+                    
                 }
                 
                 // MARK: Bottom Sheet View
@@ -441,6 +449,7 @@ struct Main: View {
                                                         .font(.caption)
                                                         .foregroundColor(.red)
                                                         .transition(AnyTransition.opacity.animation(.linear(duration: 0.5)))
+                                                        .accessibility(label: Text("RGB Text"))
                                                 }
 
                                                 Spacer()
@@ -573,16 +582,9 @@ struct Main: View {
                                             RgbColorCard(showToast: $isShowToast, red: currentRGB["red"]!, green: currentRGB["green"]!, blue: currentRGB["blue"]!)
                                             
                                             Button(action: {
-                                                ColorDataController().addColor(colorName: currentColorName.isEmpty ? "Unknown" : currentColorName, hex: currentHEX, r: currentRGB["red"]!, g: currentRGB["green"]!, b: currentRGB["blue"]!, group: "Project 1", context: manageObjectContext)
-                                                withAnimation {
-                                                    isShowSaved = true
-                                                }
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                                    withAnimation {
-                                                        isShowSaved = false
-                                                    }
-                                                }
+                                                isInputActive = false
                                                 isShowSheet.toggle()
+
                                             }
                                             ) {
                                                 Text("Save Color")
@@ -591,12 +593,11 @@ struct Main: View {
                                                     .foregroundColor(.white)
                                                     .padding()
                                                     .background(.blue)
-//                                                    .clipShape(Capsule())
                                             }
                                             .cornerRadius(16)
                                             .padding(.vertical)
                                             .sheet(isPresented: $isShowSheet) {
-                                                SaveSheet(groupList: getDistinctGroup(), passedColorName: currentColorName)
+                                                SaveSheet(hex: currentHEX, rgb: currentRGB, groupList: getDistinctGroup(), passedColorName: currentColorName)
                                             }
                                             
                                             Spacer(minLength: 100.0)
@@ -622,12 +623,7 @@ struct Main: View {
                                 let maxHeight = height - 190
                                 
                                 withAnimation(
-                                    .interpolatingSpring(
-                                        mass: 0.3,
-                                        stiffness: 10,
-                                        damping: 2,
-                                        initialVelocity: 0
-                                    )
+                                    .spring()
                                 )
                                 {
                                     if (-offset > 150 && -offset < maxHeight / 1.5) {
@@ -658,21 +654,6 @@ struct Main: View {
                             .padding(42)
                     }
                 }
-                
-                if isShowSaved {
-                    VStack {
-                        Spacer()
-                        
-                        Text("Saved!")
-                            .padding(10)
-                            .foregroundColor(.white)
-                            .font(.subheadline)
-                            .background(.black.opacity(0.8))
-                            .clipShape(Capsule())
-                            .padding(42)
-                    }
-                }
-                
             }
             .navigationTitle("My Kalla")
         }
@@ -682,7 +663,7 @@ struct Main: View {
             ToolbarItemGroup(placement: .bottomBar) {
                 Spacer()
                 Image(
-                    systemName: "plus.rectangle.on.rectangle"
+                    systemName: "square.grid.2x2"
                 )
                 .foregroundColor(.blue)
             }
