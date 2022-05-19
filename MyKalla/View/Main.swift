@@ -159,7 +159,7 @@ struct Main: View {
                                                     .simultaneousGesture(
                                                         LongPressGesture()
                                                             .onEnded { _ in
-                                                                onHold(text: "This is a test")
+                                                                onHold(text: color.colorName ?? "Unknown")
                                                             }
                                                     )
                                             }
@@ -569,7 +569,7 @@ struct Main: View {
                                             .padding(.horizontal, 4)
                                             
                                             ColorCard(showToast: $isShowToast, title: currentHEX == "" ? "-" : currentHEX)
-                                            
+                                                
                                             // MARK: RGB Color Copy Card
                                             HStack {
                                                 Text("RGB Value")
@@ -580,7 +580,7 @@ struct Main: View {
                                             .padding(.horizontal, 4)
                                             .padding(.top, 12)
                                             RgbColorCard(showToast: $isShowToast, red: currentRGB["red"]!, green: currentRGB["green"]!, blue: currentRGB["blue"]!)
-                                            
+
                                             Button(action: {
                                                 isInputActive = false
                                                 isShowSheet.toggle()
