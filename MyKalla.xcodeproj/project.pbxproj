@@ -18,6 +18,7 @@
 		5A9172A8282B68BF000F9731 /* ColorDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9172A7282B68BF000F9731 /* ColorDataController.swift */; };
 		5A9172AA282CC4AD000F9731 /* ColorName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9172A9282CC4AD000F9731 /* ColorName.swift */; };
 		5A9172AC282DFBB2000F9731 /* SaveSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9172AB282DFBB2000F9731 /* SaveSheet.swift */; };
+		5A9172AE2836ADE8000F9731 /* ColorDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9172AD2836ADE8000F9731 /* ColorDetail.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		5A9172A7282B68BF000F9731 /* ColorDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDataController.swift; sourceTree = "<group>"; };
 		5A9172A9282CC4AD000F9731 /* ColorName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorName.swift; sourceTree = "<group>"; };
 		5A9172AB282DFBB2000F9731 /* SaveSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveSheet.swift; sourceTree = "<group>"; };
+		5A9172AD2836ADE8000F9731 /* ColorDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDetail.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +94,7 @@
 				5A91729A282B4A2F000F9731 /* CustomEdge.swift */,
 				5A91729C282B4A46000F9731 /* ColorCard.swift */,
 				5A9172AB282DFBB2000F9731 /* SaveSheet.swift */,
+				5A9172AD2836ADE8000F9731 /* ColorDetail.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -170,6 +173,7 @@
 				5A91729D282B4A46000F9731 /* ColorCard.swift in Sources */,
 				5A9172AC282DFBB2000F9731 /* SaveSheet.swift in Sources */,
 				5A9172AA282CC4AD000F9731 /* ColorName.swift in Sources */,
+				5A9172AE2836ADE8000F9731 /* ColorDetail.swift in Sources */,
 				5A4C498D282A20830015F781 /* MyKallaApp.swift in Sources */,
 				5A9172A8282B68BF000F9731 /* ColorDataController.swift in Sources */,
 				5A917299282B4A08000F9731 /* BlurView.swift in Sources */,

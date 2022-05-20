@@ -136,7 +136,7 @@ struct Main: View {
                             ForEach(kallaSectionColor) { section in
                                 Section(header: Text(section.id)) {
                                     ForEach(section) { color in
-                                        NavigationLink(destination: Text("\(color.colorName ?? "Unknown")")) {
+                                        NavigationLink(destination: ColorDetail(colorName: color.colorName!, hex: color.hex!, r: String(color.r), g: String(color.g), b: String(color.b), group: color.group!)) {
                                             HStack {
                                                 VStack(alignment: .leading, spacing: 4) {
                                                     Text(color.colorName ?? "Unknown")
@@ -559,27 +559,34 @@ struct Main: View {
                                                     .clipShape(Capsule())
                                             }
                                             
-                                            // MARK: HEX Color Copy Card
-                                            HStack {
-                                                Text("HEX Value")
-                                                    .font(.subheadline)
-                                                    .fontWeight(.bold)
-                                                Spacer()
-                                            }
-                                            .padding(.horizontal, 4)
                                             
-                                            ColorCard(showToast: $isShowToast, title: currentHEX == "" ? "-" : currentHEX)
+                                            
+                                            if (!hexMode) {
+                                                // MARK: HEX Color Copy Card
+                                                HStack {
+                                                    Text("HEX Value")
+                                                        .font(.subheadline)
+                                                        .fontWeight(.bold)
+                                                    Spacer()
+                                                }
+                                                .padding(.horizontal, 4)
                                                 
-                                            // MARK: RGB Color Copy Card
-                                            HStack {
-                                                Text("RGB Value")
-                                                    .font(.subheadline)
-                                                    .fontWeight(.bold)
-                                                Spacer()
+                                                ColorCard(showToast: $isShowToast, title: currentHEX == "" ? "-" : currentHEX)
                                             }
-                                            .padding(.horizontal, 4)
-                                            .padding(.top, 12)
-                                            RgbColorCard(showToast: $isShowToast, red: currentRGB["red"]!, green: currentRGB["green"]!, blue: currentRGB["blue"]!)
+                                                
+                                            if (hexMode) {
+                                                // MARK: RGB Color Copy Card
+                                                HStack {
+                                                    Text("RGB Value")
+                                                        .font(.subheadline)
+                                                        .fontWeight(.bold)
+                                                    Spacer()
+                                                }
+                                                .padding(.horizontal, 4)
+                                                .padding(.top, 12)
+                                                
+                                                RgbColorCard(showToast: $isShowToast, red: currentRGB["red"]!, green: currentRGB["green"]!, blue: currentRGB["blue"]!)
+                                            }
 
                                             Button(action: {
                                                 isInputActive = false
@@ -601,8 +608,6 @@ struct Main: View {
                                             }
                                             
                                             Spacer(minLength: 100.0)
-                                            
-                                            
                                         }
                                     }
                                     .frame(maxWidth: .infinity)
