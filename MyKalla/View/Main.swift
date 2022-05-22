@@ -117,6 +117,7 @@ struct Main: View {
                 .ignoresSafeArea()
                 
                 VStack {
+                    // MARK: Total Color
                     HStack {
                         Text("Total color: \(totalColor())")
                             .font(.headline)
@@ -126,9 +127,10 @@ struct Main: View {
                         Spacer()
                     }
                     
+                    // MARK: Color List
                     if (totalColor() == 0) {
                         Spacer()
-                        Text("No Saved Color")
+                        Text("Swipe to convert and save color!")
                             .bold()
                         Spacer()
                     } else {
@@ -200,7 +202,7 @@ struct Main: View {
                         ZStack {
                             
                             // MARK: Background Blur
-                            BlurView(style: .systemThinMaterial)
+                            BlurView(style: .systemUltraThinMaterial)
                                 .clipShape(CustomEdge(corner: [.topLeft, .topRight], radius: 32))
                             
                             // MARK: Bottom Sheet Content
@@ -559,8 +561,6 @@ struct Main: View {
                                                     .clipShape(Capsule())
                                             }
                                             
-                                            
-                                            
                                             if (!hexMode) {
                                                 // MARK: HEX Color Copy Card
                                                 HStack {
@@ -675,6 +675,7 @@ struct Main: View {
         }
     }
     
+    // MARK: Function
     func onChange() {
         DispatchQueue.main.async {
             self.offset = gestureOffset + lastOffset
