@@ -660,7 +660,7 @@ struct Main: View {
                     }
                 }
             }
-            .navigationTitle("My Kalla")
+            .navigationTitle("MyKalla")
         }
         .toolbar {
             
